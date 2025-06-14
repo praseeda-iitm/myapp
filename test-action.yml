@@ -1,13 +1,22 @@
-name: Test Email Step
+name: Daily Commit
 
 on:
-  push:
-    branches:
-      - main  # or your default branch name
+  schedule:
+    - cron: '10 5 * * *'  # runs daily at 05:10 UTC
+  workflow_dispatch:
 
 jobs:
-  test:
+  daily-commit:
     runs-on: ubuntu-latest
     steps:
-      - name: 23f1000333@ds.study.iitm.ac.in
-        run: echo "Hello, world!"
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+
+      - name: Add commit with 23f1000333@ds.study.iitm.ac.in
+        run: |
+          echo "Update: $(date)" >> daily-log.txt
+          git config --global user.name "DevSync Bot"
+          git config --global user.email "23f1000333@ds.study.iitm.ac.in"
+          git add daily-log.txt
+          git commit -m "Automated update on $(date)"
+          git push
