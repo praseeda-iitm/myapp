@@ -1,22 +1,27 @@
-name: Daily Commit
+name: Daily Commit Action
 
 on:
   schedule:
-    - cron: '10 5 * * *'
+    - cron: '15 5 * * *'  # Adjust time to desired UTC run
   workflow_dispatch:
 
 jobs:
   daily-commit:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout the repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Make daily commit - 23f1000333@ds.study.iitm.ac.in
+      - name: Modify file for 23f1000333@ds.study.iitm.ac.in
+        run: echo "Last updated: $(date -u)" >> last-run.txt
+
+      - name: Commit step for 23f1000333@ds.study.iitm.ac.in
         run: |
-          echo "Update: $(date)" >> daily-log.txt
-          git config --global user.name "DevSync Bot"
-          git config --global user.email "23f1000333@ds.study.iitm.ac.in"
-          git add daily-log.txt
-          git commit -m "Automated update on $(date)" || echo "No changes to commit"
+          git config user.name "github-actions[bot]"
+          git config user.email "23f1000333@ds.study.iitm.ac.in"
+          git add last-run.txt
+          git commit -m "Auto daily commit $(date -u)" || echo "Nothing to commit"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
