@@ -2,7 +2,7 @@ name: Daily Commit Action
 
 on:
   schedule:
-    - cron: '25 12 * * *'  # Runs at 12:25 UTC daily
+    - cron: '30 4 * * *'  # Runs daily at 04:30 UTC
   workflow_dispatch:
 
 jobs:
@@ -15,7 +15,7 @@ jobs:
 
       - name: Append for 23f1000333@ds.study.iitm.ac.in
         run: |
-          echo "Commit run at $(date -u)" >> commit-log.txt
+          echo "Workflow ran at $(date -u)" >> commit-log.txt
 
       - name: Commit step for 23f1000333@ds.study.iitm.ac.in
         run: |
